@@ -1,0 +1,897 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+
+body {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100%;
+  overflow-x: hidden;
+}
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.hero {
+  width: 100%;
+  height: 250vh;
+  background-color: #FF66C8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  gap: 8vh;
+}
+
+/* Remove default margins from headings */
+.hero h1,
+.hero h2 {
+  margin: 0;
+}
+
+.hero h1 {
+  font-size: 15vh;
+  white-space: nowrap;
+  line-height: 12vh;
+  display: inline-block;
+  color: white;
+  font-weight: 900;
+  z-index: 50;
+}
+
+.hero h2 {
+  font-size: 4vh;
+  max-width: 80%;
+  color: white;
+  font-weight: 200;
+  z-index: 50;
+}
+
+/* Remove extra spacing if any from SVG or background elements */
+  svg,
+ .sbg {
+  margin: 0;
+  height: 100px;
+  width: 100px;
+}
+
+/* SVG stroke animation */
+  svg path {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: draw 3s linear infinite;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.cta-button {
+  position: relative;
+  padding: 3vh 2vw;
+  text-decoration: none;
+  font-weight: 900;
+  color: black;
+  background-color: white;
+  border-radius: 50px;
+  overflow: hidden;
+  transition: 0.4s ease-in-out;
+  z-index: 100;
+}
+
+.cta-button:hover {
+  transform: scale(1.1);
+}
+
+.cta-button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -5vw;
+  height: 100%;
+  width: 5%;
+  background-color: #FFD600;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  transition: width 1s ease, left 1s ease, transform 1s ease;
+}
+
+.cta-button:hover::before {
+  width: 200%;
+  left: 50%;
+  transform: translate(-50%, -50%) skew(30deg);
+}
+
+/* Container with split background: top half pink, bottom half black */
+.container {
+  position: relative;
+  width: 100vw;
+  height: 1200px;
+  margin: 50px auto;
+  background: linear-gradient(to bottom, #FF66C8 50%, #111111 50%);
+}
+
+/* Cloud image: centered at the top, wider than container */
+.cloud {
+  position: absolute;
+  top: -10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%; /* Adjust width as needed */
+  z-index: 3;
+}
+
+/* Outer circle */
+.outer-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 700px;
+  height: 700px;
+  background-color: #69BFFF;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulseOuter 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+/* Inner circle */
+.inner-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 350px;
+  height: 350px;
+  background-color: #4739FF;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulseInner 3s ease-in-out infinite;
+  z-index: 2;
+}
+
+@keyframes pulseOuter {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes pulseInner {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* Each plane is wrapped so that we can separately animate its flight path and its oscillation */
+.plane-wrapper {
+  position: absolute;
+  opacity: 1;
+  z-index: 2;
+}
+
+/* The plane element uses your plane image and oscillates */
+.paper-plane {
+  width: 100%;
+  height: 100%;
+  background-image: url('assets/plane.png'); /* Replace with your plane image */
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: oscillate 0.5s ease-in-out infinite;
+}
+
+@keyframes oscillate {
+  0% { transform: rotate(calc(var(--base-rotate, 0deg) - var(--amplitude, 5deg))); }
+  50% { transform: rotate(calc(var(--base-rotate, 0deg) + var(--amplitude, 5deg))); }
+  100% { transform: rotate(calc(var(--base-rotate, 0deg) - var(--amplitude, 5deg))); }
+}
+
+/* Man image: placed at the bottom center, on top of everything */
+.man {
+  position: absolute;
+  bottom: 10;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  max-width: 100%;
+  /* Optionally, set a fixed width, e.g., width: 200px; */
+}
+
+.bringlife {
+  background-color: #111111;
+  margin-top: -20vh; /* Removed negative margin */
+  min-height: 100vh; /* Adjusted height for responsiveness */
+  display: flex;
+  flex-direction: column; /* Aligns children vertically */
+  align-items: center; /* Centers horizontally */
+  justify-content: center; /* Centers vertically */
+  width: 100vw;
+}
+
+.bringlife h1 {
+  color: white;
+  font-weight: 900;
+  font-size: 10vh; /* Adjusted for better responsiveness */
+  text-align: center;
+  margin: 0; /* Remove default margin */
+}
+
+.bringlife h2 {
+  color: white;
+  font-size: 4vh; /* Adjusted size */
+  text-align: center;
+  font-weight: 300;
+  margin-top: 2vh; /* Adds spacing below h1 */
+}
+.bringlife img{
+  margin-top: -25vh;
+height: 30vw;
+width: 35vh;
+}
+.bringlife video{
+  width: 100vw;
+}
+@media only screen and (max-width: 768px) {
+  .hero {
+    height: 125vh;
+    margin: 0;
+    gap: 10;
+  }
+  .hero h1 {
+    font-size: 6vh;
+    line-height: 5vh;
+  }
+  .hero h2 {
+    font-size: 2vh;
+    max-width: 90%;
+  }
+
+  /* CTA button tweaks */
+  .cta-button {
+    padding: 4vh 4vw;
+
+  }
+
+  /* Container adjustments */
+  .container {
+    height: 60vh;
+  }
+
+  /* Scale down circles for mobile */
+  .outer-circle {
+    width: 300px;
+    height: 300px;
+  }
+  .inner-circle {
+    width: 150px;
+    height: 150px;
+  }
+
+  /* Bringlife section responsiveness */
+  .bringlife {
+    padding-top: 20vh;
+    min-height: auto;
+  }
+  .bringlife h1 {
+    font-size: 4vh;
+  }
+  .bringlife h2 {
+    font-size: 2vh;
+  }
+  /* Scale down cloud image */
+  .cloud {
+    width: 100%;
+    top: -5vh;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Scale down man image */
+  .man {
+    width: 50%;
+    bottom: 0vh;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Constrain paper planes so they don't go out of bounds */
+  .plane-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 80%;
+    max-height: 80%;
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .paper-plane {
+    width: 100%;
+    height: auto;
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: oscillate 0.5s ease-in-out infinite;
+  }
+}
+.impression{
+  margin-top: -0.5vh;
+  height: 150vh;
+  width: 100vw;
+  background-color: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+.impression h1 {
+  color: white;
+  font-weight: 900;
+  font-size: 8vh; /* Adjusted for better responsiveness */
+  text-align: center;
+  margin: 0; /* Remove default margin */
+}
+
+.impression h2 {
+  color: white;
+  font-size: 3vh; /* Adjusted size */
+  text-align: center;
+  font-weight: 300;
+  margin-top: 2vh; /* Adds spacing below h1 */
+}
+
+.toggle-container {
+  position: relative;
+  width: 160px;
+  height: 80px;
+  margin-top: 2vh;
+}
+
+.toggle-input {
+  display: none;
+}
+
+.toggle-label {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 140px;
+  height: 60px;
+  background: #ff4c4c;
+  border-radius: 30px;
+  box-shadow: 0 5px #b93737;
+  transition: background 0.3s ease-in-out;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+.face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.eye {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+
+.smile {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  width: 40px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  transition: all 0.3s ease-in-out;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 35px;
+  height: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+  margin: 0 10px;
+  z-index: 1;
+}
+
+.toggle-switch:before {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: #ff4c4c;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+  top: 50%;
+  left: 3px;
+  transform: translateY(-50%);
+}
+
+.toggle-input:checked + .toggle-label .toggle-switch:before {
+  background: #28a745;
+  left: 16px;
+}
+
+.toggle-input:checked + .toggle-label .smile {
+  border-bottom-color: #fff;
+  border-top: none;
+  bottom: 10px;
+}
+
+.toggle-input:not(:checked) + .toggle-label .smile {
+  border-top-color: #fff;
+  border-bottom: none;
+  bottom: 0;
+}
+
+.toggle-input:checked + .toggle-label {
+  background: #ced10a;
+  box-shadow: 0 5px #74c027;
+}
+
+.toggle-input:not(:checked) + .toggle-label {
+  background: #252422;
+  box-shadow: 0 5px #484d48;
+  bottom: 5px;
+}
+
+.toggle-label:hover .eye {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes blink {
+  0%,
+  90%,
+  100% {
+    height: 10px;
+  }
+  95% {
+    height: 2px;
+  }
+}
+
+.left-eye {
+  animation: blink 3s infinite;
+}
+
+.right-eye {
+  animation: blink 3s infinite;
+}
+
+/* Styling for each particle */
+.particle {
+  position: absolute;
+  width: 50px;       /* Adjust the size based on your light.png */
+  height: 70px;
+  pointer-events: none; /* Ensure particles don't block clicks */
+  transition: transform 2s ease-out, opacity 2s ease-out;
+  transform: translate(0, 0);
+  z-index: 1000;
+}
+.impression video{
+  width: 100vw;
+}
+@media only screen and (max-width: 768px) {
+  .bringlife video{
+    width: 150vw;
+    padding-top: 4vh;
+  }
+.impression{
+  height: 80vh;
+}
+.impression video{
+  width: 150vw;
+  padding-top: 2vh;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+  .impression h1 {
+    font-size: 4vh;
+  }
+  .impression h2{
+    font-size: 2vh;
+  }
+  .particle{
+    height: 20px;
+    width: 20px;
+  }
+}
+
+.superpower{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFD600;
+  width: 100vw;
+  height: 200vh;
+  flex-direction: column;
+}
+.superpower .sbg{
+  height: auto;
+  width: 20vw;
+}
+.superpower h1{
+  font-size: 8vh;
+  text-align: center;
+}
+.superpower .superpowercontainers{
+  padding-top: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10vw;
+}
+.superpower .superpowercontainers .superpowercontainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 50px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.263);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: 0.4s ease-in-out;
+}
+.superpower .superpowercontainers .superpowercontainer:hover{
+  transform: translateY(-20px);
+  background-color: white;
+}
+.superpower .superpowercontainers .superpowercontainer img{
+  height: 50px;
+  width: 50px;
+  padding: 15px;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+.superpower .superpowercontainers .superpowercontainer h2{
+  font-size: 2vw;
+  text-align: center;
+}
+.superpower .superpowercontainers .superpowercontainer video{
+  border-radius: 30px;
+  height: auto;
+  width: 30vw;
+}
+
+/* Mobile Responsive Adjustments */
+@media only screen and (max-width: 768px) {
+  .superpower {
+    /* Optionally adjust overall height and add vertical padding */
+    height: auto;
+    padding: 20px 0;
+  }
+  
+  .superpower .sbg {
+    /* Increase width for better visibility on mobile */
+    width: 60vw;
+  }
+  
+  .superpower h1 {
+    /* Slightly smaller font size */
+    font-size: 3vh;
+  }
+  
+  .superpower .superpowercontainers {
+    /* Stack containers vertically on mobile */
+    flex-direction: column;
+    gap: 5vh;
+    padding-top: 3vh;
+  }
+  
+  .superpower .superpowercontainers .superpowercontainer {
+    padding: 20px;
+  }
+  
+  .superpower .superpowercontainers .superpowercontainer h2 {
+    /* Increase font size for readability on small screens */
+    font-size: 4vw;
+  }
+  
+  .superpower .superpowercontainers .superpowercontainer video {
+    /* Use a larger width relative to viewport for mobile */
+    width: 80vw;
+  }
+}
+
+.develop {
+  padding-top: 8vh;
+  display: flex;
+  width: 100vw;
+  height: 300vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.develop img {
+  height: auto;
+  width: 100px;
+  background-color: grey;
+  border-radius: 8px;
+}
+
+.develop h1 {
+  font-size: 3vw;
+}
+
+.develop h2 {
+  font-size: 2.5vw;
+  padding-bottom: 3vh;
+}
+
+.developcontainer {
+  margin-top: 2vh;
+  background-color: #FFEFFA;
+  padding: 50px;
+  height: 500px;
+  width: 1000px;
+  border-radius: 30px;
+}
+
+.developcontainer2 {
+  background-color: #F5FEDD;
+  padding: 50px;
+  border-radius: 30px;
+  height: 500px;
+  width: 1000px;
+  margin-top: 2vh;
+}
+
+.developcontainer3 {
+  margin-top: 2vh;
+  background-color: #F1F0FE;
+  padding: 50px;
+  border-radius: 30px;
+  height: 500px;
+  width: 1000px;
+}
+
+.developcontainer3 video {
+  width: 72vw;
+  height: auto;
+}
+
+.developgrid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5vw;
+}
+
+.developcontain {
+  padding: 2vw 4vh;
+  border-radius: 20px;
+  background-color: white;
+}
+
+.developcontain img {
+  border: none;
+  background-color: white;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .develop {
+    padding-top: 7vh;
+    /* You might want to adjust the height for mobile screens */
+    height: auto;
+  }
+
+  .develop h1 {
+    font-size: 6vw;
+    padding: 1vw;
+  }
+
+  .develop h2 {
+    font-size: 5vw;
+    padding-bottom: 2vh;
+  }
+
+  .developcontainer,
+  .developcontainer2,
+  .developcontainer3 {
+    width: 60%;
+    height: auto;
+    padding: 30px;
+    margin-top: 2vh;
+  }
+
+  .developgrid {
+    flex-direction: column;
+    gap: 2vh;
+  }
+
+  .developcontainer3 video {
+    width: 60vw;
+  }
+}
+
+.reindeersection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.reindeersection img {
+  width: 100vw;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.reindeersection h1 {
+  font-size: 5rem;
+  margin-bottom: 20px;
+}
+
+/* Form styling */
+.quote-form {
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.quote-form div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.quote-form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.quote-form input[type="text"],
+.quote-form input[type="email"],
+.quote-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.quote-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Centering the button and making it black */
+.quote-form button {
+  padding: 20px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 900;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+}
+
+.quote-form button:hover {
+  background-color: #333;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 480px) {
+  .reindeersection h1 {
+    font-size: 1.5rem;
+  }
+
+  .quote-form {
+    width: 95%;
+  }
+}
+.thatsit {
+  display: flex;
+  width: 100vw;
+  height: 150vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative; /* creates a positioning context */
+}
+
+.thatsit h1 {
+  font-size: 5vw;
+  font-weight: 900;
+  text-align: center;
+}
+
+.thatsit button {
+  padding: 20px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+}
+
+.thatsit button:hover {
+  background-color: #333;
+}
+
+.unicorn img {
+  padding-top: 10vh;
+  width: 20vw;
+  height: auto;
+  transform-origin: 50% 100%;
+  animation: rotateImage 3s infinite alternate ease-in-out;
+}
+
+@keyframes rotateImage {
+  from {
+    transform: rotate(-45deg);
+  }
+  to {
+    transform: rotate(45deg);
+  }
+}
+
+/* Overlapping image positioned relative to the unicorn image */
+.agg img {
+  position: absolute;
+  width: 100vw;
+  z-index: 1000;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -20vh;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 600px) {
+  .thatsit {
+    width: 100%;
+    height: auto;
+  }
+  
+  .thatsit h1 {
+    font-size: 8vw;
+  }
+  
+  .thatsit button {
+    padding: 15px;
+    font-size: 0.9rem;
+  }
+  
+  .unicorn img {
+    width: 40vw;
+  }
+  
+  .agg img {
+    width: 100vw;
+    bottom: -8vh;
+  }
+}
