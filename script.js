@@ -1,5 +1,5 @@
 const scroll = new LocomotiveScroll({
-  el: document.querySelector('[data-scroll-container]'),
+  el: document.querySelector('#main'),
   smooth: true
 });
 
@@ -205,4 +205,23 @@ const toggle = document.getElementById('toggle');
         attemptPlay();
         document.removeEventListener('touchstart', onUserInteraction);
       }, { once: true });
+    });
+
+    document.getElementById("quoteForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent actual form submission
+      
+      // Get input values
+      var name = document.getElementById("name").value;
+      var message = document.getElementById("message").value;
+  
+      // Format message
+      var whatsappMessage = `Hello, my name is *${name}*.\n\n` +
+                            `*Question:* ${message}\n\n`;
+  
+      // WhatsApp URL
+      var phoneNumber = "918360552306"; // Replace with your number (with country code, no + sign)
+      var whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+  
+      // Open WhatsApp
+      window.open(whatsappURL, "_blank");
     });
