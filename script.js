@@ -1,3 +1,18 @@
+window.addEventListener('load', function () {
+  const preloader = document.querySelector('.preloader');
+  if (preloader) {
+    // Optional fade-out effect
+    preloader.style.transition = 'opacity 0.5s ease';
+    preloader.style.opacity = '0';
+    
+    // After the transition, set display to 'none'
+    setTimeout(function () {
+      preloader.style.display = 'none';
+    }, 500); // matches the CSS transition duration
+  }
+});
+
+
 const scroll = new LocomotiveScroll({
   el: document.querySelector('#main'),
   smooth: true
