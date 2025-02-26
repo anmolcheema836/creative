@@ -638,7 +638,7 @@ width: 35vh;
   height: 50px;
   width: 50px;
   padding: 15px;
-  border: 2px solid white;
+  border: 2px solid #726FF7;
   border-radius: 10px;
 }
 .superpower .superpowercontainers .superpowercontainer h2{
@@ -836,6 +836,10 @@ width: 35vh;
   margin-bottom: 20px;
 }
 
+.reindeersection video{
+  width: 25vw;
+  height: auto;
+}
 /* Form styling */
 .quote-form {
   width: 90%;
@@ -886,7 +890,7 @@ width: 35vh;
 }
 
 .quote-form button:hover {
-  background-color: #333;
+  background-color: #726FF7;
 }
 
 /* Responsive adjustments for smaller screens */
@@ -929,7 +933,7 @@ width: 35vh;
 }
 
 .thatsit button:hover {
-  background-color: #333;
+  background-color: #726FF7;
 }
 
 .unicorn img {

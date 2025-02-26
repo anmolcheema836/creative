@@ -108,7 +108,7 @@ function spawnPlane() {
 }
 
 // Continuously spawn a new plane every 300ms.
-setInterval(spawnPlane, 300);
+setInterval(spawnPlane, 200);
 
 // Adjust scroll effect for the man element.
 scroll.on('scroll', (args) => {
