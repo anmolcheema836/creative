@@ -9,12 +9,95 @@ body {
   padding: 0;
   width: 100vw;
   height: 100%;
-  overflow-x: hidden;
 }
 html, body {
-  overflow-x: hidden;
   width: 100%;
 }
+  /* Modal backdrop */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  /* Modal content */
+  .modal-content {
+    background: #E6E6FA;  /* light violet */
+    border-radius: 15px;
+    margin: 10% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+  }
+  .close-modal {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    font-size: 28px;
+    cursor: pointer;
+  }
+  /* Tic Tac Toe board */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+  .cell {
+    background: #fff;
+    width: 100%;
+    padding-top: 100%;  /* maintain a square */
+    position: relative;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .cell-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5em;
+  }
+  /* Colors for marks */
+  .cell-inner.x {
+    color: #FF66C8;
+  }
+  .cell-inner.o {
+    color: yellow;
+  }
+   /* Retry icon styling */
+   #retryButton {
+    display: none;
+    margin-top: 10px;
+    background: transparent;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-left: 45%;
+  }
+  .herobuttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+  }
+  /* Responsive: ensure modal fits on mobile */
+  @media (max-width: 480px) {
+    .modal-content {
+      margin: 30% auto;
+      width: 85%;
+    }
+  }
 .preloader {
   display: flex;
   flex-direction: column;
