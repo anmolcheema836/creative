@@ -240,175 +240,180 @@ const toggle = document.getElementById('toggle');
       // Open WhatsApp
       window.open(whatsappURL, "_blank");
     });
-    
-    // Modal logic
-    const modal = document.getElementById("gameModal");
-    const playGameButton = document.getElementById("playGameButton");
-    const closeModal = document.querySelector(".close-modal");
-    const retryButton = document.getElementById("retryButton");
-    const statusDisplay = document.getElementById("gameStatus");
-
-    playGameButton.addEventListener("click", () => {
-      modal.style.display = "block";
-      resetGame();
-    });
-
-    closeModal.addEventListener("click", () => {
-      modal.style.display = "none";
-    });
-
-    window.addEventListener("click", (e) => {
-      if (e.target === modal) {
-        modal.style.display = "none";
+     // Modal logic
+     const modal = document.getElementById("gameModal");
+     const playGameButton = document.getElementById("playGameButton");
+     const closeModal = document.querySelector(".close-modal");
+     const retryButton = document.getElementById("retryButton");
+     const statusDisplay = document.getElementById("gameStatus");
+ 
+     playGameButton.addEventListener("click", () => {
+       modal.style.display = "block";
+       resetGame();
+     });
+ 
+     closeModal.addEventListener("click", () => {
+       modal.style.display = "none";
+     });
+ 
+     window.addEventListener("click", (e) => {
+       if (e.target === modal) {
+         modal.style.display = "none";
+       }
+     });
+ 
+     retryButton.addEventListener("click", () => {
+       resetGame();
+     });
+ 
+     // Tic Tac Toe Game Logic
+     const board = Array(9).fill(null);
+     const human = "X";
+     const computer = "O";
+     let gameActive = true;
+     // Track whose turn it is: "X" for human, "O" for computer.
+     let currentTurn = human;
+     const cells = document.querySelectorAll(".cell");
+ 
+     // Winning combinations
+     const winPatterns = [
+       [0, 1, 2],
+       [3, 4, 5],
+       [6, 7, 8],
+       [0, 3, 6],
+       [1, 4, 7],
+       [2, 5, 8],
+       [0, 4, 8],
+       [2, 4, 6]
+     ];
+ 
+     // Render the board on screen
+     function renderBoard() {
+       board.forEach((mark, index) => {
+         const cellInner = document.querySelector(`.cell[data-index="${index}"] .cell-inner`);
+         cellInner.textContent = mark ? mark : "";
+         cellInner.classList.remove("x", "o");
+         if (mark === human) cellInner.classList.add("x");
+         else if (mark === computer) cellInner.classList.add("o");
+       });
+     }
+ 
+     // Check winner or draw
+     function checkWinner(newBoard) {
+       for (let pattern of winPatterns) {
+         const [a, b, c] = pattern;
+         if (newBoard[a] && newBoard[a] === newBoard[b] && newBoard[a] === newBoard[c]) {
+           return newBoard[a];
+         }
+       }
+       return newBoard.every(cell => cell) ? "draw" : null;
+     }
+ 
+     // Handle human move (only when it's human's turn)
+     cells.forEach(cell => {
+       cell.addEventListener("click", () => {
+         const index = cell.getAttribute("data-index");
+         if (currentTurn !== human || !gameActive || board[index]) return;
+         board[index] = human;
+         renderBoard();
+         let result = checkWinner(board);
+         if (result) {
+           endGame(result);
+         } else {
+           currentTurn = computer;
+           // Let computer take its turn after a slight delay
+           setTimeout(computerMove, 200);
+         }
+       });
+     });
+ 
+     // Computer move using minimax for unbeatable play
+     function computerMove() {
+       let bestScore = -Infinity;
+       let move;
+       for (let i = 0; i < board.length; i++) {
+         if (!board[i]) {
+           board[i] = computer;
+           let score = minimax(board, 0, false);
+           board[i] = null;
+           if (score > bestScore) {
+             bestScore = score;
+             move = i;
+           }
+         }
+       }
+       board[move] = computer;
+       renderBoard();
+       let result = checkWinner(board);
+       if (result) {
+         endGame(result);
+       } else {
+         currentTurn = human;
+       }
+     }
+ 
+     // Scoring for minimax
+     const scores = {
+       [computer]: 10,
+       [human]: -10,
+       draw: 0
+     };
+ 
+     // Minimax algorithm for move selection
+     function minimax(newBoard, depth, isMaximizing) {
+       let result = checkWinner(newBoard);
+       if (result !== null) {
+         return scores[result];
+       }
+       if (isMaximizing) {
+         let bestScore = -Infinity;
+         for (let i = 0; i < newBoard.length; i++) {
+           if (!newBoard[i]) {
+             newBoard[i] = computer;
+             let score = minimax(newBoard, depth + 1, false);
+             newBoard[i] = null;
+             bestScore = Math.max(score, bestScore);
+           }
+         }
+         return bestScore;
+       } else {
+         let bestScore = Infinity;
+         for (let i = 0; i < newBoard.length; i++) {
+           if (!newBoard[i]) {
+             newBoard[i] = human;
+             let score = minimax(newBoard, depth + 1, true);
+             newBoard[i] = null;
+             bestScore = Math.min(score, bestScore);
+           }
+         }
+         return bestScore;
+       }
+     }
+ 
+     // End game and show status
+     function endGame(result) {
+       gameActive = false;
+       if (result === human) {
+         statusDisplay.textContent = "You win!";
+         // Ideally this should not happen since the algorithm is unbeatable.
+         retryButton.style.display = "none";
+       } else if (result === computer) {
+         statusDisplay.textContent = "Computer wins!";
+         retryButton.style.display = "block";
+       } else if (result === "draw") {
+         statusDisplay.textContent = "It's a draw!";
+         retryButton.style.display = "block";
+       }
+     }
+ 
+     // Reset game board for a new game
+     function resetGame() {
+       for (let i = 0; i < board.length; i++) {
+         board[i] = null;
+       }
+       gameActive = true;
+       currentTurn = human;
+       statusDisplay.textContent = "";
+       retryButton.style.display = "none";
+       renderBoard();
       }
-    });
-
-    retryButton.addEventListener("click", () => {
-      resetGame();
-    });
-
-    // Tic Tac Toe Game Logic
-    const board = Array(9).fill(null);
-    const human = "X";
-    const computer = "O";
-    let gameActive = true;
-    const cells = document.querySelectorAll(".cell");
-
-    // Winning combinations
-    const winPatterns = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6]
-    ];
-
-    // Render the board on screen
-    function renderBoard() {
-      board.forEach((mark, index) => {
-        const cellInner = document.querySelector(`.cell[data-index="${index}"] .cell-inner`);
-        cellInner.textContent = mark ? mark : "";
-        cellInner.classList.remove("x", "o");
-        if (mark === human) cellInner.classList.add("x");
-        else if (mark === computer) cellInner.classList.add("o");
-      });
-    }
-
-    // Check winner or draw
-    function checkWinner(newBoard) {
-      for (let pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        if (newBoard[a] && newBoard[a] === newBoard[b] && newBoard[a] === newBoard[c]) {
-          return newBoard[a];
-        }
-      }
-      return newBoard.every(cell => cell) ? "draw" : null;
-    }
-
-    // Handle human move
-    cells.forEach(cell => {
-      cell.addEventListener("click", () => {
-        const index = cell.getAttribute("data-index");
-        if (!board[index] && gameActive) {
-          board[index] = human;
-          renderBoard();
-          let result = checkWinner(board);
-          if (result) {
-            endGame(result);
-          } else {
-            // Let computer take its turn after a slight delay
-            setTimeout(computerMove, 200);
-          }
-        }
-      });
-    });
-
-    // Computer move using minimax for unbeatable play
-    function computerMove() {
-      let bestScore = -Infinity;
-      let move;
-      for (let i = 0; i < board.length; i++) {
-        if (!board[i]) {
-          board[i] = computer;
-          let score = minimax(board, 0, false);
-          board[i] = null;
-          if (score > bestScore) {
-            bestScore = score;
-            move = i;
-          }
-        }
-      }
-      board[move] = computer;
-      renderBoard();
-      let result = checkWinner(board);
-      if (result) {
-        endGame(result);
-      }
-    }
-
-    // Scoring for minimax
-    const scores = {
-      [computer]: 10,
-      [human]: -10,
-      draw: 0
-    };
-
-    // Minimax algorithm for move selection
-    function minimax(newBoard, depth, isMaximizing) {
-      let result = checkWinner(newBoard);
-      if (result !== null) {
-        return scores[result];
-      }
-      if (isMaximizing) {
-        let bestScore = -Infinity;
-        for (let i = 0; i < newBoard.length; i++) {
-          if (!newBoard[i]) {
-            newBoard[i] = computer;
-            let score = minimax(newBoard, depth + 1, false);
-            newBoard[i] = null;
-            bestScore = Math.max(score, bestScore);
-          }
-        }
-        return bestScore;
-      } else {
-        let bestScore = Infinity;
-        for (let i = 0; i < newBoard.length; i++) {
-          if (!newBoard[i]) {
-            newBoard[i] = human;
-            let score = minimax(newBoard, depth + 1, true);
-            newBoard[i] = null;
-            bestScore = Math.min(score, bestScore);
-          }
-        }
-        return bestScore;
-      }
-    }
-
-    // End game and show status
-    function endGame(result) {
-      gameActive = false;
-      if (result === human) {
-        statusDisplay.textContent = "You win!";
-        retryButton.style.display = "none";
-      } else if (result === computer) {
-        statusDisplay.textContent = "Sorry! Anmol Cheema never loses.";
-        retryButton.style.display = "block";
-      } else if (result === "draw") {
-        statusDisplay.textContent = "It's a draw!";
-        retryButton.style.display = "block";
-      }
-    }
-
-    // Reset game board for a new game
-    function resetGame() {
-      for (let i = 0; i < board.length; i++) {
-        board[i] = null;
-      }
-      gameActive = true;
-      statusDisplay.textContent = "";
-      retryButton.style.display = "none";
-      renderBoard();
-    }
