@@ -398,7 +398,7 @@ const toggle = document.getElementById('toggle');
          // Ideally this should not happen since the algorithm is unbeatable.
          retryButton.style.display = "none";
        } else if (result === computer) {
-         statusDisplay.textContent = "Computer wins!";
+         statusDisplay.textContent = "Sorry! Anmol Cheema never loses.";
          retryButton.style.display = "block";
        } else if (result === "draw") {
          statusDisplay.textContent = "It's a draw!";

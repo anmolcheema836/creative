@@ -1021,7 +1021,7 @@ width: 35vh;
 
 .unicorn img {
   padding-top: 10vh;
-  width: 20vw;
+  width: 30vw;
   height: auto;
   transform-origin: 50% 100%;
   animation: rotateImage 3s infinite alternate ease-in-out;
@@ -1108,7 +1108,7 @@ width: 35vh;
 }
 
 .end-button:hover {
-  background-color: #8dffa5; /* Darker green */
+  background-color: #adcdb4; /* Darker green */
   transform: scale(1.05);
 }
 
