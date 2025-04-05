@@ -424,7 +424,7 @@ function loadTicTacToe() {
     if (result === human)
       statusDisplay.textContent = "You win! (Unexpected)";
     else if (result === computer)
-      statusDisplay.textContent = "Sorry! Anmol Cheema never loses";
+      statusDisplay.textContent = "Sorry! Anmol Cheema never loses.";
     else statusDisplay.textContent = "It's a draw!";
     addRetryButton(loadTicTacToe);
   }
