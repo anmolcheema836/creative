@@ -240,180 +240,476 @@ const toggle = document.getElementById('toggle');
       // Open WhatsApp
       window.open(whatsappURL, "_blank");
     });
-     // Modal logic
-     const modal = document.getElementById("gameModal");
-     const playGameButton = document.getElementById("playGameButton");
-     const closeModal = document.querySelector(".close-modal");
-     const retryButton = document.getElementById("retryButton");
-     const statusDisplay = document.getElementById("gameStatus");
- 
-     playGameButton.addEventListener("click", () => {
-       modal.style.display = "block";
-       resetGame();
-     });
- 
-     closeModal.addEventListener("click", () => {
-       modal.style.display = "none";
-     });
- 
-     window.addEventListener("click", (e) => {
-       if (e.target === modal) {
-         modal.style.display = "none";
-       }
-     });
- 
-     retryButton.addEventListener("click", () => {
-       resetGame();
-     });
- 
-     // Tic Tac Toe Game Logic
-     const board = Array(9).fill(null);
-     const human = "X";
-     const computer = "O";
-     let gameActive = true;
-     // Track whose turn it is: "X" for human, "O" for computer.
-     let currentTurn = human;
-     const cells = document.querySelectorAll(".cell");
- 
-     // Winning combinations
-     const winPatterns = [
-       [0, 1, 2],
-       [3, 4, 5],
-       [6, 7, 8],
-       [0, 3, 6],
-       [1, 4, 7],
-       [2, 5, 8],
-       [0, 4, 8],
-       [2, 4, 6]
-     ];
- 
-     // Render the board on screen
-     function renderBoard() {
-       board.forEach((mark, index) => {
-         const cellInner = document.querySelector(`.cell[data-index="${index}"] .cell-inner`);
-         cellInner.textContent = mark ? mark : "";
-         cellInner.classList.remove("x", "o");
-         if (mark === human) cellInner.classList.add("x");
-         else if (mark === computer) cellInner.classList.add("o");
-       });
-     }
- 
-     // Check winner or draw
-     function checkWinner(newBoard) {
-       for (let pattern of winPatterns) {
-         const [a, b, c] = pattern;
-         if (newBoard[a] && newBoard[a] === newBoard[b] && newBoard[a] === newBoard[c]) {
-           return newBoard[a];
-         }
-       }
-       return newBoard.every(cell => cell) ? "draw" : null;
-     }
- 
-     // Handle human move (only when it's human's turn)
-     cells.forEach(cell => {
-       cell.addEventListener("click", () => {
-         const index = cell.getAttribute("data-index");
-         if (currentTurn !== human || !gameActive || board[index]) return;
-         board[index] = human;
-         renderBoard();
-         let result = checkWinner(board);
-         if (result) {
-           endGame(result);
-         } else {
-           currentTurn = computer;
-           // Let computer take its turn after a slight delay
-           setTimeout(computerMove, 200);
-         }
-       });
-     });
- 
-     // Computer move using minimax for unbeatable play
-     function computerMove() {
-       let bestScore = -Infinity;
-       let move;
-       for (let i = 0; i < board.length; i++) {
-         if (!board[i]) {
-           board[i] = computer;
-           let score = minimax(board, 0, false);
-           board[i] = null;
-           if (score > bestScore) {
-             bestScore = score;
-             move = i;
-           }
-         }
-       }
-       board[move] = computer;
-       renderBoard();
-       let result = checkWinner(board);
-       if (result) {
-         endGame(result);
-       } else {
-         currentTurn = human;
-       }
-     }
- 
-     // Scoring for minimax
-     const scores = {
-       [computer]: 10,
-       [human]: -10,
-       draw: 0
-     };
- 
-     // Minimax algorithm for move selection
-     function minimax(newBoard, depth, isMaximizing) {
-       let result = checkWinner(newBoard);
-       if (result !== null) {
-         return scores[result];
-       }
-       if (isMaximizing) {
-         let bestScore = -Infinity;
-         for (let i = 0; i < newBoard.length; i++) {
-           if (!newBoard[i]) {
-             newBoard[i] = computer;
-             let score = minimax(newBoard, depth + 1, false);
-             newBoard[i] = null;
-             bestScore = Math.max(score, bestScore);
-           }
-         }
-         return bestScore;
-       } else {
-         let bestScore = Infinity;
-         for (let i = 0; i < newBoard.length; i++) {
-           if (!newBoard[i]) {
-             newBoard[i] = human;
-             let score = minimax(newBoard, depth + 1, true);
-             newBoard[i] = null;
-             bestScore = Math.min(score, bestScore);
-           }
-         }
-         return bestScore;
-       }
-     }
- 
-     // End game and show status
-     function endGame(result) {
-       gameActive = false;
-       if (result === human) {
-         statusDisplay.textContent = "You win!";
-         // Ideally this should not happen since the algorithm is unbeatable.
-         retryButton.style.display = "none";
-       } else if (result === computer) {
-         statusDisplay.textContent = "Sorry! Anmol Cheema never loses.";
-         retryButton.style.display = "block";
-       } else if (result === "draw") {
-         statusDisplay.textContent = "It's a draw!";
-         retryButton.style.display = "block";
-       }
-     }
- 
-     // Reset game board for a new game
-     function resetGame() {
-       for (let i = 0; i < board.length; i++) {
-         board[i] = null;
-       }
-       gameActive = true;
-       currentTurn = human;
-       statusDisplay.textContent = "";
-       retryButton.style.display = "none";
-       renderBoard();
+
+    // Modal and Navigation Logic
+const modal = document.getElementById("gameModal");
+const playGameButton = document.getElementById("playGameButton");
+const closeModal = document.querySelector(".close-modal");
+const gameContent = document.getElementById("gameContent");
+
+playGameButton.addEventListener("click", () => {
+  modal.style.display = "block";
+  showGameSelection();
+});
+closeModal.addEventListener("click", () => {
+  modal.style.display = "none";
+  gameContent.innerHTML = "";
+});
+window.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+    gameContent.innerHTML = "";
+  }
+});
+
+// Game Selection Screen
+function showGameSelection() {
+  gameContent.innerHTML = `
+    <div class="game-selection">
+      <h2 style="text-align:center;">Select a Game</h2>
+      <div class="game-grid">
+        <div class="game-card" onclick="loadTicTacToe()">Tic Tac Toe</div>
+        <div class="game-card" onclick="loadMinesweeper()">Minesweeper</div>
+        <div class="game-card" onclick="loadWhackAMole()">Whack‑a‑Mole</div>
+        <div class="game-card" onclick="loadFlappyBird()">Flappy Bird</div>
+      </div>
+    </div>
+  `;
+}
+// Back Button
+function addBackButton() {
+  const backBtn = document.createElement("button");
+  backBtn.className = "back-button";
+  backBtn.textContent = "Back to Games";
+  backBtn.onclick = showGameSelection;
+  gameContent.appendChild(backBtn);
+}
+// Retry Button Template
+function addRetryButton(retryFunction) {
+  const container = document.createElement("div");
+  container.className = "button-container";
+  const retryBtn = document.createElement("button");
+  retryBtn.className = "retry-button";
+  retryBtn.title = "Retry Game";
+  retryBtn.innerHTML = "&#x21bb; Retry";
+  retryBtn.onclick = retryFunction;
+  container.appendChild(retryBtn);
+  gameContent.appendChild(container);
+}
+
+/* ===============================
+   Tic Tac Toe Implementation
+   Unbeatable AI with Minimax Algorithm
+=============================== */
+function loadTicTacToe() {
+  gameContent.innerHTML = `
+    <h2 style="text-align:center;">Tic Tac Toe</h2>
+    <div class="ttt-board" id="tttBoard">
+      ${Array(9)
+        .fill(0)
+        .map(
+          (_, i) => `<div class="ttt-cell" data-index="${i}">
+        <div class="ttt-cell-inner"></div>
+      </div>`
+        )
+        .join('')}
+    </div>
+    <div id="tttStatus" style="text-align:center; margin:10px 0; font-size:1.2em;"></div>
+  `;
+  addBackButton();
+
+  const board = Array(9).fill(null);
+  const human = "X";
+  const computer = "O";
+  let gameActive = true;
+  let currentTurn = human;
+  const cells = document.querySelectorAll(".ttt-cell");
+  const statusDisplay = document.getElementById("tttStatus");
+  const winPatterns = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  function renderBoard() {
+    board.forEach((mark, index) => {
+      const cellInner = document.querySelector(
+        `.ttt-cell[data-index="${index}"] .ttt-cell-inner`
+      );
+      cellInner.textContent = mark ? mark : "";
+      cellInner.className =
+        "ttt-cell-inner " + (mark ? (mark === human ? "x" : "o") : "");
+    });
+  }
+  function checkWinner(bd) {
+    for (let pattern of winPatterns) {
+      const [a, b, c] = pattern;
+      if (bd[a] && bd[a] === bd[b] && bd[a] === bd[c]) return bd[a];
+    }
+    return bd.every((cell) => cell) ? "draw" : null;
+  }
+  cells.forEach((cell) => {
+    cell.addEventListener("click", () => {
+      const index = cell.getAttribute("data-index");
+      if (currentTurn !== human || !gameActive || board[index]) return;
+      board[index] = human;
+      renderBoard();
+      let result = checkWinner(board);
+      if (result) {
+        endGame(result);
+      } else {
+        currentTurn = computer;
+        setTimeout(computerMove, 300);
       }
+    });
+  });
+  function computerMove() {
+    let bestScore = -Infinity,
+      move;
+    for (let i = 0; i < board.length; i++) {
+      if (!board[i]) {
+        board[i] = computer;
+        let score = minimax(board, 0, false);
+        board[i] = null;
+        if (score > bestScore) {
+          bestScore = score;
+          move = i;
+        }
+      }
+    }
+    board[move] = computer;
+    renderBoard();
+    let result = checkWinner(board);
+    if (result) {
+      endGame(result);
+    } else {
+      currentTurn = human;
+    }
+  }
+  const scores = { [computer]: 10, [human]: -10, draw: 0 };
+  function minimax(bd, depth, isMaximizing) {
+    let result = checkWinner(bd);
+    if (result !== null) return scores[result];
+    if (isMaximizing) {
+      let bestScore = -Infinity;
+      for (let i = 0; i < bd.length; i++) {
+        if (!bd[i]) {
+          bd[i] = computer;
+          let score = minimax(bd, depth + 1, false);
+          bd[i] = null;
+          bestScore = Math.max(score, bestScore);
+        }
+      }
+      return bestScore;
+    } else {
+      let bestScore = Infinity;
+      for (let i = 0; i < bd.length; i++) {
+        if (!bd[i]) {
+          bd[i] = human;
+          let score = minimax(bd, depth + 1, true);
+          bd[i] = null;
+          bestScore = Math.min(score, bestScore);
+        }
+      }
+      return bestScore;
+    }
+  }
+  function endGame(result) {
+    gameActive = false;
+    if (result === human)
+      statusDisplay.textContent = "You win! (Unexpected)";
+    else if (result === computer)
+      statusDisplay.textContent = "Sorry! Anmol Cheema never loses";
+    else statusDisplay.textContent = "It's a draw!";
+    addRetryButton(loadTicTacToe);
+  }
+  renderBoard();
+}
+
+/* ===============================
+   Minesweeper Implementation
+=============================== */
+function loadMinesweeper() {
+  const rows = 8,
+    cols = 8,
+    bombsCount = 10;
+  let board = Array.from({ length: rows }, () => Array(cols).fill(0));
+  let revealed = Array.from({ length: rows }, () => Array(cols).fill(false));
+  let gameOver = false;
+  let bombsPlaced = 0;
+  while (bombsPlaced < bombsCount) {
+    const r = Math.floor(Math.random() * rows);
+    const c = Math.floor(Math.random() * cols);
+    if (board[r][c] !== "B") {
+      board[r][c] = "B";
+      bombsPlaced++;
+    }
+  }
+  function countBombs(r, c) {
+    let count = 0;
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        const nr = r + i,
+          nc = c + j;
+        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && board[nr][nc] === "B")
+          count++;
+      }
+    }
+    return count;
+  }
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (board[r][c] !== "B") {
+        board[r][c] = countBombs(r, c);
+      }
+    }
+  }
+  function renderMinesweeper() {
+    let html = `<h2 style="text-align:center;">Minesweeper</h2>
+      <div class="ms-status" id="msStatus"></div>
+      <div class="ms-board">`;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        let cellClass = "ms-cell";
+        if (revealed[r][c]) cellClass += " revealed";
+        let content = "";
+        if (revealed[r][c]) {
+          if (board[r][c] === "B") {
+            cellClass += " bomb";
+            content = "💣";
+          } else if (board[r][c] > 0) {
+            content = board[r][c];
+          }
+        }
+        html += `<div class="${cellClass}" data-row="${r}" data-col="${c}">
+            <div class="ms-cell-inner">${content}</div>
+          </div>`;
+      }
+    }
+    html += `</div>`;
+    gameContent.innerHTML = html;
+    addBackButton();
+    addRetryButton(loadMinesweeper);
+    addMsListeners();
+  }
+  function addMsListeners() {
+    const cells = document.querySelectorAll(".ms-cell");
+    cells.forEach((cell) => {
+      cell.addEventListener("click", () => {
+        const r = +cell.getAttribute("data-row");
+        const c = +cell.getAttribute("data-col");
+        if (revealed[r][c] || gameOver) return;
+        revealed[r][c] = true;
+        if (board[r][c] === "B") {
+          document.getElementById("msStatus").textContent = "Game Over!";
+          gameOver = true;
+          for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+              if (board[i][j] === "B") revealed[i][j] = true;
+            }
+          }
+        } else {
+          if (board[r][c] === 0) {
+            revealEmpty(r, c);
+          }
+        }
+        renderMinesweeper();
+      });
+    });
+  }
+  function revealEmpty(r, c) {
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        const nr = r + i,
+          nc = c + j;
+        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && !revealed[nr][nc]) {
+          revealed[nr][nc] = true;
+          if (board[nr][nc] === 0) {
+            revealEmpty(nr, nc);
+          }
+        }
+      }
+    }
+  }
+  renderMinesweeper();
+}
+
+/* ===============================
+   Whack‑a‑Mole Implementation
+=============================== */
+function loadWhackAMole() {
+  const moleImageURL = "assets/mole.png";
+  gameContent.innerHTML = `
+    <h2 style="text-align:center;">Whack‑a‑Mole</h2>
+    <div class="wam-info" id="wamScore">Score: 0</div>
+    <div class="wam-info" id="wamTimer">Time: 30</div>
+    <div class="wam-board">
+      ${Array(9)
+        .fill(0)
+        .map((_, i) => `<div class="wam-cell" data-index="${i}"></div>`)
+        .join('')}
+    </div>
+  `;
+  addBackButton();
+  let score = 0;
+  let timeLeft = 30;
+  const scoreDisplay = document.getElementById("wamScore");
+  const timerDisplay = document.getElementById("wamTimer");
+  const cells = document.querySelectorAll(".wam-cell");
+  let moleInterval, countdownInterval;
+  function showMole() {
+    cells.forEach((cell) => {
+      cell.innerHTML = "";
+      cell.onclick = null;
+    });
+    const randIndex = Math.floor(Math.random() * cells.length);
+    if (moleImageURL) {
+      const moleImg = document.createElement("img");
+      moleImg.src = moleImageURL;
+      moleImg.style.width = "100%";
+      moleImg.style.height = "100%";
+      moleImg.style.objectFit = "contain";
+      cells[randIndex].appendChild(moleImg);
+    } else {
+      const moleDiv = document.createElement("div");
+      moleDiv.className = "wam-mole";
+      cells[randIndex].appendChild(moleDiv);
+    }
+    cells[randIndex].onclick = () => {
+      score++;
+      scoreDisplay.textContent = "Score: " + score;
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+      cells[randIndex].innerHTML = "";
+    };
+  }
+  moleInterval = setInterval(showMole, 1000);
+  countdownInterval = setInterval(() => {
+    timeLeft--;
+    timerDisplay.textContent = "Time: " + timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(moleInterval);
+      clearInterval(countdownInterval);
+      timerDisplay.textContent = "Game Over! Final Score: " + score;
+      cells.forEach((cell) => (cell.onclick = null));
+    }
+  }, 1000);
+  addRetryButton(loadWhackAMole);
+}
+
+/* ===============================
+   Flappy Bird Implementation
+   Game begins only when the canvas is tapped.
+   Easier parameters: lower gravity, reduced flap power, wider gap and slower pipes.
+=============================== */
+function loadFlappyBird() {
+  const birdImageURL = "assets/flappy.gif";
+  gameContent.innerHTML = `
+    <h2 style="text-align:center;">Flappy Bird</h2>
+    <canvas id="flappyCanvas" width="300" height="400"></canvas>
+    <div class="fb-info" id="fbStatus"></div>
+    <div class="fb-start" id="fbStartMessage">Tap the canvas to start</div>
+  `;
+  addBackButton();
+  const canvas = document.getElementById("flappyCanvas");
+  const ctx = canvas.getContext("2d");
+  let bird = { x: 50, y: canvas.height / 2, radius: 10, velocity: 0, width: 30, height: 30 };
+  const gravity = 0.3,
+    flapPower = -7;
+  let pipes = [];
+  let frameCount = 0;
+  let gameOver = false;
+  let gameStarted = false;
+  const pipeGap = 120;
+  const pipeWidth = 40;
+  const pipeSpeed = 1.5;
+  let birdImage = null;
+  if (birdImageURL) {
+    birdImage = new Image();
+    birdImage.src = birdImageURL;
+  }
+  canvas.addEventListener("click", startGame);
+  window.addEventListener("keydown", (e) => {
+    if (e.code === "Space" && !gameStarted) startGame();
+  });
+  function startGame() {
+    if (!gameStarted) {
+      gameStarted = true;
+      document.getElementById("fbStartMessage").style.display = "none";
+      canvas.removeEventListener("click", startGame);
+      window.removeEventListener("keydown", startGame);
+      canvas.addEventListener("click", flap);
+      window.addEventListener("keydown", (e) => {
+        if (e.code === "Space") flap();
+      });
+      updateFlappy();
+    }
+  }
+  function flap() {
+    if (!gameOver) bird.velocity = flapPower;
+  }
+  function createPipe() {
+    const topHeight = Math.floor(Math.random() * (canvas.height - pipeGap - 80)) + 40;
+    pipes.push({
+      x: canvas.width,
+      top: topHeight,
+      bottom: canvas.height - topHeight - pipeGap,
+    });
+  }
+  function updateFlappy() {
+    frameCount++;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    bird.velocity += gravity;
+    bird.y += bird.velocity;
+    if (birdImage) {
+      ctx.drawImage(birdImage, bird.x - bird.width / 2, bird.y - bird.height / 2, bird.width, bird.height);
+    } else {
+      ctx.beginPath();
+      ctx.arc(bird.x, bird.y, bird.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "#ffeb3b";
+      ctx.fill();
+    }
+    if (frameCount % 90 === 0) createPipe();
+    for (let i = 0; i < pipes.length; i++) {
+      let p = pipes[i];
+      p.x -= pipeSpeed;
+      ctx.fillStyle = "#4caf50";
+      ctx.fillRect(p.x, 0, pipeWidth, p.top);
+      ctx.fillRect(p.x, canvas.height - p.bottom, pipeWidth, p.bottom);
+      if (bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + pipeWidth) {
+        if (bird.y - bird.radius < p.top || bird.y + bird.radius > canvas.height - p.bottom) {
+          gameOver = true;
+        }
+      }
+    }
+    if (bird.y + bird.radius > canvas.height || bird.y - bird.radius < 0)
+      gameOver = true;
+    if (!gameOver) {
+      requestAnimationFrame(updateFlappy);
+    } else {
+      document.getElementById("fbStatus").textContent = "Game Over! Click Retry to play again.";
+      if (navigator.vibrate) {
+        navigator.vibrate(200);
+      }
+      addRetryButton(loadFlappyBird);
+    }
+  }
+  function drawStartScreen() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (birdImage) {
+      ctx.drawImage(birdImage, bird.x - bird.width / 2, bird.y - bird.height / 2, bird.width, bird.height);
+    } else {
+      ctx.beginPath();
+      ctx.arc(bird.x, bird.y, bird.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "#ffeb3b";
+      ctx.fill();
+    }
+  }
+  drawStartScreen();
+}

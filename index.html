@@ -140,29 +140,17 @@
       <h1>Design that's<br> crazy good.</h1>
       <h2>Website & Webapp development for startups<br> that want to stand out from the rest.</h2>
       <div class="herobuttons">
-      <a href="tel:+918360552306" class="cta-button">Book a Call</a>
+        <a href="https://wa.me/918360552306?text=Hi" class="cta-button">Book a Call</a>
       <button id="playGameButton" class="cta-button">Let's Play a Game</button>
     </div>
-      <!-- Modal with Tic Tac Toe Game -->
-      <div id="gameModal" class="modal">
-        <div class="modal-content">
-          <span class="close-modal">&times;</span>
-          <div id="gameBoard" class="board">
-            <!-- 9 game cells -->
-            <div class="cell" data-index="0"><div class="cell-inner"></div></div>
-            <div class="cell" data-index="1"><div class="cell-inner"></div></div>
-            <div class="cell" data-index="2"><div class="cell-inner"></div></div>
-            <div class="cell" data-index="3"><div class="cell-inner"></div></div>
-            <div class="cell" data-index="4"><div class="cell-inner"></div></div>
-            <div class="cell" data-index="5"><div class="cell-inner"></div></div>
-            <div class="cell" data-index="6"><div class="cell-inner"></div></div>
-            <div class="cell" data-index="7"><div class="cell-inner"></div></div>
-            <div class="cell" data-index="8"><div class="cell-inner"></div></div>
-          </div>
-          <p id="gameStatus"></p>
-          <button id="retryButton" title="Retry Game">&#x21bb;</button>
-        </div>
+  
+    <!-- Modal -->
+    <div id="gameModal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div id="gameContent"></div>
       </div>
+    </div>
       <div class="container">
         <!-- Cloud image: centered at the top, wider than container -->
         <img src="assets/cloud.png" class="cloud" alt="Cloud">
