@@ -222,62 +222,206 @@ html, body {
   height: 100vh;
 }
 
-.spinner {
-  width: 100px;
-  height: 100px;
+/* From Uiverse.io by vishnu1100 */ 
+.easter-animation {
   position: relative;
-  animation: spinner 1.6s infinite ease;
-  transform-style: preserve-3d;
 }
 
-.spinner > div {
-  background-color: rgba(229, 197, 159, 0.1);
-  height: 100%;
+.egg {
+  position: relative;
+  width: 150px;
+  height: 200px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: linear-gradient(
+    295deg,
+    #ff595e 15%,
+    #8ac926 15%,
+    #8ac926 30%,
+    #ff595e 30%,
+    #ff595e 49%,
+    #8ac926 49%,
+    #8ac926 70%,
+    #ff595e 70%
+  );
+  overflow: hidden;
+  animation: bounce 1s linear infinite;
+}
+
+.egg:before,
+.egg:after {
   position: absolute;
-  width: 100%;
-  border: 4px solid rgb(229, 197, 159);
+  content: "";
+}
+
+.egg:before {
+  width: 200px;
+  height: 100px;
+  background-color: #1982c4;
+  top: 160px;
+  box-shadow: 0 -50px #ffca3a, 0 -65px #8ac926, 0 -90px #6a4c93, 0 -95px #ffca3a;
+}
+
+.egg:after {
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  background-color: #ffca3a;
+  left: 90px;
+  top: 75px;
+  box-shadow: -40px 0 #ffca3a, 40px 0 #ffca3a, -80px 0 #ffca3a, -120px 0 #ffca3a;
+}
+
+.eyes {
+  position: absolute;
+  background-color: #333;
+  border-radius: 50%;
+  width: 20px;
+  height: 30px;
+  left: 90px;
+  top: 120px;
+  box-shadow: 20px 0 #333;
+}
+
+.eyes:before {
+  position: absolute;
+  content: "";
+  background-color: #fff;
+  width: 5px;
+  height: 12px;
+  border-radius: 50%;
+  left: 12px;
+  top: 10px;
+  box-shadow: 20px 0 #fff;
+}
+
+.eyes:after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 30px;
+  background-color: #1982c4;
+  top: -130px;
+  left: -100px;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1, 1) translateY(0);
+  }
+  10% {
+    transform: scale(1.1, 0.9) translateY(0);
+  }
+  30% {
+    transform: scale(0.9, 1.1) translateY(-70px) translateX(30px);
+  }
+  50% {
+    transform: scale(1.05, 0.95) translateY(0) translateX(30px) rotate(-10deg);
+  }
+  58% {
+    transform: scale(1, 1) translateY(-7px) translateX(0);
+  }
+  65% {
+    transform: scale(1, 1) translateY(0);
+  }
+  100% {
+    transform: scale(1, 1) translateY(0);
+  }
+}
+
+.shadow {
+  position: absolute;
+  z-index: -1;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100px;
+  height: 20px;
+  border-radius: 50%;
+  left: 20px;
+  top: 190px;
+  animation: move 1s linear infinite;
+}
+
+@keyframes move {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0) scale(0.8);
+  }
+  30% {
+    transform: translateX(0) scale(0.8);
+  }
+  50% {
+    transform: translateX(30px) scale(0.7);
+  }
+  58% {
+    transform: translateX(20px);
+  }
+  65% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.clouds {
+  position: absolute;
+  width: 500px;
+}
+
+.cloud1,
+.cloud2,
+.cloud3 {
+  position: absolute;
+  background-color: white;
+  width: 100px;
+  height: 25px;
+  border-radius: 100px;
+}
+
+.cloud1:before,
+.cloud2:before,
+.cloud3:before {
+  position: absolute;
+  content: "";
+  width: 40px;
+  height: 40px;
+  top: -20px;
+  left: 20px;
+  background-color: white;
   border-radius: 50%;
 }
 
-.spinner div:nth-of-type(1) {
-  transform: translateZ(-35px) rotateY(180deg);
+.cloud1 {
+  top: -150px;
+  z-index: -1;
+  animation: clouds 2s linear infinite;
 }
 
-.spinner div:nth-of-type(2) {
-  transform: rotateY(-270deg) translateX(50%);
-  transform-origin: top right;
+.cloud2 {
+  top: -70px;
+  opacity: 0.5;
+  transform: scale(0.7);
+  animation: clouds 1.8s linear infinite;
 }
 
-.spinner div:nth-of-type(3) {
-  transform: rotateY(270deg) translateX(-50%);
-  transform-origin: center left;
+.cloud3 {
+  top: -100px;
+  opacity: 0.5;
+  transform: scale(0.9);
+  animation: clouds 1.5s linear infinite;
+  z-index: -2;
 }
 
-.spinner div:nth-of-type(4) {
-  transform: rotateX(90deg) translateY(-50%);
-  transform-origin: top center;
-}
-
-.spinner div:nth-of-type(5) {
-  transform: rotateX(-90deg) translateY(50%);
-  transform-origin: bottom center;
-}
-
-.spinner div:nth-of-type(6) {
-  transform: translateZ(35px);
-}
-
-@keyframes spinner {
-  0% {
-    transform: rotate(0deg) rotateX(0deg) rotateY(0deg);
+@keyframes clouds {
+  from {
+    left: 500px;
   }
-  50% {
-    transform: rotate(180deg) rotateX(180deg) rotateY(180deg);
-  }
-  100% {
-    transform: rotate(360deg) rotateX(360deg) rotateY(360deg);
+  to {
+    left: -500px;
   }
 }
+
 
 .text {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
