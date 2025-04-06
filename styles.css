@@ -220,9 +220,9 @@ html, body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  background-color: pink;
 }
 
-/* From Uiverse.io by vishnu1100 */ 
 .easter-animation {
   position: relative;
 }
