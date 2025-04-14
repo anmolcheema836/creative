@@ -1066,8 +1066,6 @@ width: 35vh;
   overflow-y: auto;
 }
 .developcontainer {
-  position: sticky;
-  bottom: 0;
   margin-top: 3vh;
   background-color: #FFEFFA;
   padding: 50px;
@@ -1078,8 +1076,6 @@ width: 35vh;
 }
 
 .developcontainer2 {
-  position: sticky;
-  bottom: 0;
   background-color: #F5FEDD;
   padding: 50px;
   border-radius: 30px;
@@ -1090,8 +1086,6 @@ width: 35vh;
 }
 
 .developcontainer3 {
-  position: sticky;
-  bottom: 0;
   margin-top: 3vh;
   background-color: #F1F0FE;
   padding: 50px;
