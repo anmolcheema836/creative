@@ -7,6 +7,7 @@ body {
   font-style: normal;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
   width: 100vw;
   height: 100%;
 }
@@ -20,8 +21,9 @@ html, body {
   z-index: 10000;
   left: 0;
   top: 0;
-  width: 100%;
+  width: 100vw;
   height: 100%;
+  overflow-x: hidden;
   overflow-y: auto;
   background: rgba(0, 0, 0, 0.6);
 }
@@ -908,19 +910,16 @@ width: 35vh;
   transform: translate(0, 0);
   z-index: 1000;
 }
-.impression video{
-  width: 100vw;
-}
 @media only screen and (max-width: 768px) {
   .bringlife video{
-    width: 150vw;
+    width: 100vw;
     padding-top: 4vh;
   }
 .impression{
   height: 80vh;
 }
 .impression video{
-  width: 150vw;
+  width: 100vw;
   padding-top: 2vh;
   padding-bottom: 0;
   margin-bottom: 0;
