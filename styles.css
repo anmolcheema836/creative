@@ -283,7 +283,10 @@ html, body {
   top: 120px;
   box-shadow: 20px 0 #333;
 }
-
+#main{
+  height: auto;
+  width: 100vw;
+}
 .eyes:before {
   position: absolute;
   content: "";
@@ -1028,6 +1031,116 @@ width: 35vh;
   }
   
   .superpower .superpowercontainers .superpowercontainer video {
+    /* Use a larger width relative to viewport for mobile */
+    width: 80vw;
+  }
+}
+
+.websiteexamples{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FF66C8;
+  width: 100vw;
+  height: auto;
+  flex-direction: column;
+}
+ .visitbutton {
+  margin-top: 15px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #FFD600;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 400;
+    transition: background-color 0.3s;
+  }
+
+  .visitbutton:hover {
+    background-color: #555;
+  }
+.websiteexamples h1{
+  font-size: 8vh;
+  text-align: center;
+}
+.websiteexamples .websiteexamplescontainers{
+  padding-top: 5vh;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content:center;
+  gap: 10vw;
+  padding-bottom: 20px;
+}
+.websiteexamples .websiteexamplescontainers .websiteexamplescontainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 50px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.263);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: 0.4s ease-in-out;
+}
+.websiteexamples .websiteexamplescontainers .websiteexamplescontainer:hover{
+  transform: translateY(-20px);
+  background-color: white;
+}
+.websiteexamples .websiteexamplescontainers .websiteexamplescontainer img{
+  height: 50px;
+  width: 50px;
+  padding: 15px;
+  border: 2px solid #726FF7;
+  border-radius: 10px;
+}
+.websiteexamples .websiteexamples .websiteexamplescontainer h2{
+  font-size: 2vw;
+  text-align: center;
+}
+.websiteexamples .websiteexamplescontainers .websiteexamplescontainer video{
+  border-radius: 30px;
+  height: auto;
+  width: 30vw;
+}
+
+/* Mobile Responsive Adjustments */
+@media only screen and (max-width: 768px) {
+ .websiteexamples {
+    /* Optionally adjust overall height and add vertical padding */
+    height: auto;
+    padding: 20px 0;
+  }
+  
+.websiteexamples .sbg {
+    /* Increase width for better visibility on mobile */
+    width: 60vw;
+  }
+.websiteexamples h1 {
+    /* Slightly smaller font size */
+    font-size: 3vh;
+  }
+  
+.websiteexamples .websiteexamplescontainers {
+    /* Stack containers vertically on mobile */
+    flex-direction: column;
+    gap: 5vh;
+    padding-top: 3vh;
+  }
+  
+  .websiteexamples .websiteexamplescontainers .websiteexamplescontainer {
+    padding: 20px;
+  }
+  
+.websiteexamples .websiteexamplescontainers .websiteexamplescontainer h2 {
+    /* Increase font size for readability on small screens */
+    font-size: 4vw;
+  }
+  
+.websiteexamples .websiteexamplescontainers .websiteexamplescontainer video {
     /* Use a larger width relative to viewport for mobile */
     width: 80vw;
   }
