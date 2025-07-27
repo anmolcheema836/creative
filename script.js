@@ -717,3 +717,7 @@ console.log(
   "%c 🚀 Designed and Developed by Anmol Cheema ",
   "background: linear-gradient(90deg, #0f2027, #2c5364); color: #ffffff; font-weight: bold; font-size: 1rem; padding: 10px 20px; border-radius: 6px; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);"
 );
+console.log(
+  "%c 💻 Designed and Developed by Anmol Cheema ",
+  "background: linear-gradient(90deg, #00c9ff, #92fe9d); color: #000000; font-weight: bold; font-size: 1rem; padding: 10px 20px; border-radius: 6px; text-shadow: 1px 1px 2px rgba(255,255,255,0.5);"
+);
