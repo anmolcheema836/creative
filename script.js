@@ -11,12 +11,9 @@ window.addEventListener('load', function () {
     }, 500); // matches the CSS transition duration
   }
 });
-
-
-const scroll = new LocomotiveScroll({
-  el: document.querySelector('#main'),
-  smooth: true
-});
+ setTimeout(() => {
+        document.getElementById('whatsappButton').style.display = 'block';
+    }, 3000);
 
 const container = document.querySelector('.container');
 // Outer circle dimensions: 700px x 700px, so radius = 350px.
@@ -111,13 +108,14 @@ function spawnPlane() {
 setInterval(spawnPlane, 200);
 
 // Adjust scroll effect for the man element.
-scroll.on('scroll', (args) => {
+window.addEventListener('scroll', () => {
   const man = document.querySelector('.man');
   if (!man) return;
   
-  // Use a different multiplier on mobile vs PC.
+  // The logic inside remains the same, but we get the scroll position
+  // from the native 'window.scrollY' property instead of 'args.scroll.y'.
   const multiplier = window.innerWidth <= 768 ? 0.19 : 0.5;
-  const newBottom = 10 + args.scroll.y * multiplier;
+  const newBottom = 10 + window.scrollY * multiplier;
   man.style.bottom = `${newBottom}px`;
 });
 
